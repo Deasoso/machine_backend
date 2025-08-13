@@ -1,0 +1,29 @@
+{
+  "/loginadmin": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "admin",
+        "handler": "loginadmin"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  },
+  "/changeadmin": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "admin",
+        "handler": "changeadmin"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  },
+  "/searcadmin": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "admin",
+        "handler": "search"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  }
+}

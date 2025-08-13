@@ -1,0 +1,29 @@
+{
+  "/initcontract": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "contract",
+        "handler": "init"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  },
+  "/addcontract": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "contract",
+        "handler": "add"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  },
+  "/searchcontract": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "contract",
+        "handler": "search"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  }
+}

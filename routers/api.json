@@ -1,0 +1,26 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "sharetoken",
+    "description": "sharetoken",
+    "version": "0.0.1"
+  },
+  "host": "127.0.0.1:8488",
+  "basePath": "/api",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "txid": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "txid"
+    }
+  }
+}
