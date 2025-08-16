@@ -2,49 +2,34 @@ const DataTypes = require('sequelize');
 
 const sequelize = require('../webServer/db/sequelize');
 
-module.exports = sequelize.connect.define('orders', { // 账单
+module.exports = sequelize.connect.define('activitys', { // 活动
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
   },
-  adminid: { // 用户id
+  adminid: { // 创建用户id
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
   },
-  companyid: { // 公司id
+  adminidlist: { // 活动执行人列表
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
   },
-  contractid: { // 合约id
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  money: { // 资金变动
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  orderstr: { // 账单备注字符串
+  name: { // 名称
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '',
   },
-  timestamp: { // 支付时间
-    type: DataTypes.BIGINT,
+  machinelist: { // 设备列表
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: [],
   },
-  endtimestamp: { // 结清时间
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  statu: { // 状态
+  statu: { // 状态，0未开始，1进行中，2已结束
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,

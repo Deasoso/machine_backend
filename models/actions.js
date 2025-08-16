@@ -2,7 +2,7 @@ const DataTypes = require('sequelize');
 
 const sequelize = require('../webServer/db/sequelize');
 
-module.exports = sequelize.connect.define('companys', { // 公司
+module.exports = sequelize.connect.define('actions', { // 动作
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -14,30 +14,25 @@ module.exports = sequelize.connect.define('companys', { // 公司
     allowNull: false,
     defaultValue: 0,
   },
-  name: { // 公司名
+  name: { // 名称
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '',
   },
-  fullname: { // 公司全名，预留
+  actionid: { // 执行id
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
+  imageurl: { // 大图像
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '',
   },
-  money: { // 总资金
-    type: DataTypes.INTEGER,
+  iconurl: { // 小图标
+    type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 0,
-  },
-  timestamp: { // 创建时间
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  statu: { // 状态，0正常，1冻结，2注销
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
+    defaultValue: '',
   },
   tip: { // 备注
     type: DataTypes.STRING,

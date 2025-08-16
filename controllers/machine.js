@@ -8,13 +8,14 @@ const verifyer = require('./verifyer');
 exports.add = async function add(ctx) {
   const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   if(ctx.request.body.obj.id){
-    const have = await models.companys.find({
+    const have = await models.machines.find({
       where: { id: ctx.request.body.obj.id }
     });
     ctx.assert(have, 500, '修改对象不存在');
-    await models.companys.update({
+    await models.machines.update({
       name: ctx.request.body.obj.name || have.name,
-      fullname: ctx.request.body.obj.fullname || have.fullname,
+      ip: ctx.request.body.obj.ip || have.ip,
+      actionlist: ctx.request.body.obj.actionlist || have.actionlist,
       statu: ctx.request.body.obj.statu || have.statu,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
@@ -23,12 +24,13 @@ exports.add = async function add(ctx) {
       },
     });
   }else{
-    await models.companys.create({
+    await models.machines.create({
       adminid: loginkey.adminid,
-      name: ctx.request.body.obj.name,
-      fullname: ctx.request.body.obj.fullname,
-      tip: ctx.request.body.obj.tip,
-      timestamp: new Date().getTime(),
+      name: ctx.request.body.obj.name || have.name,
+      ip: ctx.request.body.obj.ip || have.ip,
+      actionlist: ctx.request.body.obj.actionlist || have.actionlist,
+      statu: ctx.request.body.obj.actionlist || have.actionlist,
+      tip: ctx.request.body.obj.tip || have.tip,
     });
   }
   ctx.body = { message: 'success' };
@@ -47,7 +49,7 @@ exports.search = async function search(ctx) {
     where: {}
   };
   for (const index in ctx.request.body.searchObj) {
-    if (models.companys.attributes[index].type instanceof DataTypes.STRING) {
+    if (models.machines.attributes[index].type instanceof DataTypes.STRING) {
       searchObj.where[index] = {
         [Op.like]: `%${ctx.request.body.searchObj[index]}%`,
       };
@@ -55,6 +57,6 @@ exports.search = async function search(ctx) {
       searchObj.where[index] = ctx.request.body.searchObj[index];
     }
   }
-  const result = await models.companys.findAndCountAll(searchObj);
+  const result = await models.machines.findAndCountAll(searchObj);
   ctx.body = { result };
 };

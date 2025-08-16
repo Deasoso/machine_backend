@@ -8,15 +8,14 @@ const verifyer = require('./verifyer');
 exports.add = async function add(ctx) {
   const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   if(ctx.request.body.obj.id){
-    const have = await models.bankorders.find({
+    const have = await models.activitys.find({
       where: { id: ctx.request.body.obj.id }
     });
     ctx.assert(have, 500, '修改对象不存在');
-    await models.bankorders.update({ // 银行账单可以调整公司银行卡id等
-      companyid: ctx.request.body.obj.companyid || have.companyid,
-      orderid: ctx.request.body.obj.orderid || have.orderid,
-      bankcardid: ctx.request.body.obj.bankcardid || have.bankcardid,
+    await models.activitys.update({
+      adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
       name: ctx.request.body.obj.name || have.name,
+      machinelist: ctx.request.body.obj.machinelist || have.machinelist,
       statu: ctx.request.body.obj.statu || have.statu,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
@@ -25,20 +24,13 @@ exports.add = async function add(ctx) {
       },
     });
   }else{
-    await models.bankorders.create({
+    await models.activitys.create({
       adminid: loginkey.adminid,
-      companyid: ctx.request.body.obj.companyid,
-      orderid: ctx.request.body.obj.orderid,
-      bankcardid: ctx.request.body.obj.bankcardid,
-      name: ctx.request.body.obj.name,
-      payername: ctx.request.body.obj.payername,
-      gettername: ctx.request.body.obj.gettername,
-      contenttext: ctx.request.body.obj.contenttext,
-      bankorderid: ctx.request.body.obj.bankorderid,
-      nonce_str: ctx.request.body.obj.nonce_str,
-      statu: ctx.request.body.obj.statu,
-      tip: ctx.request.body.obj.tip,
-      timestamp: new Date().getTime(),
+      adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
+      name: ctx.request.body.obj.name || have.name,
+      machinelist: ctx.request.body.obj.machinelist || have.machinelist,
+      statu: ctx.request.body.obj.statu || have.statu,
+      tip: ctx.request.body.obj.tip || have.tip,
     });
   }
   ctx.body = { message: 'success' };
@@ -57,7 +49,7 @@ exports.search = async function search(ctx) {
     where: {}
   };
   for (const index in ctx.request.body.searchObj) {
-    if (models.bankorders.attributes[index].type instanceof DataTypes.STRING) {
+    if (models.activitys.attributes[index].type instanceof DataTypes.STRING) {
       searchObj.where[index] = {
         [Op.like]: `%${ctx.request.body.searchObj[index]}%`,
       };
@@ -65,6 +57,6 @@ exports.search = async function search(ctx) {
       searchObj.where[index] = ctx.request.body.searchObj[index];
     }
   }
-  const result = await models.bankorders.findAndCountAll(searchObj);
+  const result = await models.activitys.findAndCountAll(searchObj);
   ctx.body = { result };
 };

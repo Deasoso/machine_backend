@@ -2,45 +2,35 @@ const DataTypes = require('sequelize');
 
 const sequelize = require('../webServer/db/sequelize');
 
-module.exports = sequelize.connect.define('bankcards', { // 银行卡
+module.exports = sequelize.connect.define('machines', { // 设备
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
   },
-  adminid: { // 用户id
+  adminid: { // 创建用户id
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
   },
-  companyid: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  name: { // 银行卡名称
+  name: { // 名称
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '',
   },
-  bankcardid: { // 银行的卡唯一id
+  ip: { // 设备ip
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: '',
   },
-  money: { // 创建后总资金
-    type: DataTypes.INTEGER,
+  actionlist: { // 动作编号列表
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: [],
   },
-  statu: { // 状态
+  statu: { // 状态，01启用中，2已弃用
     type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
-  timestamp: {
-    type: DataTypes.BIGINT,
     allowNull: false,
     defaultValue: 0,
   },
