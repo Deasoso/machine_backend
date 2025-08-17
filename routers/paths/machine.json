@@ -1,17 +1,17 @@
 {
-  "/addorder": {
+  "/addmachine": {
     "post": {
       "x-oai-controller": [{
-        "file": "order",
+        "file": "machine",
         "handler": "add"
       }],
       "responses": { "200": { "description": "返回成功" } }
     }
   },
-  "/searchorder": {
+  "/searchmachine": {
     "post": {
       "x-oai-controller": [{
-        "file": "order",
+        "file": "machine",
         "handler": "search"
       }],
       "responses": { "200": { "description": "返回成功" } }

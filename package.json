@@ -1,17 +1,5 @@
 {
-  "name": "envcoin_backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Deasoso/bysj_backend"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Deasoso/bysj_backend/issues"
-  },
+  "name": "finance_backend",
   "scripts": {
     "eslint": "./node_modules/.bin/eslint ./",
     "dev": "NODE_ENV=development node ./webServer/index.js",
@@ -19,13 +7,6 @@
     "lint": "eslint --ext .js .",
     "precommit": ""
   },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "homepage": "https://gitlab.com/nerdDan/coinfair#readme",
   "dependencies": {
     "@koa/cors": "^2.2.3",
     "axios": "^1.9.0",

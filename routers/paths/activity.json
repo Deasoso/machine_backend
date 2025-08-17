@@ -1,17 +1,17 @@
 {
-  "/addcompany": {
+  "/addactivity": {
     "post": {
       "x-oai-controller": [{
-        "file": "company",
+        "file": "activity",
         "handler": "add"
       }],
       "responses": { "200": { "description": "返回成功" } }
     }
   },
-  "/searchcompany": {
+  "/searchactivity": {
     "post": {
       "x-oai-controller": [{
-        "file": "company",
+        "file": "activity",
         "handler": "search"
       }],
       "responses": { "200": { "description": "返回成功" } }

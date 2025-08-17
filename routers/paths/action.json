@@ -1,26 +1,17 @@
 {
-  "/initcontract": {
+  "/addaction": {
     "post": {
       "x-oai-controller": [{
-        "file": "contract",
-        "handler": "init"
-      }],
-      "responses": { "200": { "description": "返回成功" } }
-    }
-  },
-  "/addcontract": {
-    "post": {
-      "x-oai-controller": [{
-        "file": "contract",
+        "file": "action",
         "handler": "add"
       }],
       "responses": { "200": { "description": "返回成功" } }
     }
   },
-  "/searchcontract": {
+  "/searchaction": {
     "post": {
       "x-oai-controller": [{
-        "file": "contract",
+        "file": "action",
         "handler": "search"
       }],
       "responses": { "200": { "description": "返回成功" } }

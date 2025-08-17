@@ -24,7 +24,7 @@ module.exports = sequelize.connect.define('activitys', { // 活动
     allowNull: false,
     defaultValue: '',
   },
-  machinelist: { // 设备列表
+  machineidlist: { // 设备列表
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false,
     defaultValue: [],
