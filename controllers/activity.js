@@ -13,9 +13,9 @@ exports.add = async function add(ctx) {
     });
     ctx.assert(have, 500, '修改对象不存在');
     await models.activitys.update({
-      adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
+      adminidlist: JSON.parse(ctx.request.body.obj.adminidlist) || have.adminidlist,
       name: ctx.request.body.obj.name || have.name,
-      machinelist: ctx.request.body.obj.machinelist || have.machinelist,
+      machinelist: JSON.parse(ctx.request.body.obj.machinelist) || have.machinelist,
       statu: ctx.request.body.obj.statu || have.statu,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
@@ -26,11 +26,11 @@ exports.add = async function add(ctx) {
   }else{
     await models.activitys.create({
       adminid: loginkey.adminid,
-      adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
-      name: ctx.request.body.obj.name || have.name,
-      machinelist: ctx.request.body.obj.machinelist || have.machinelist,
-      statu: ctx.request.body.obj.statu || have.statu,
-      tip: ctx.request.body.obj.tip || have.tip,
+      adminidlist: JSON.parse(ctx.request.body.obj.adminidlist),
+      name: ctx.request.body.obj.name,
+      machinelist: JSON.parse(ctx.request.body.obj.machinelist),
+      statu: ctx.request.body.obj.statu,
+      tip: ctx.request.body.obj.tip,
     });
   }
   ctx.body = { message: 'success' };
@@ -59,4 +59,54 @@ exports.search = async function search(ctx) {
   }
   const result = await models.activitys.findAndCountAll(searchObj);
   ctx.body = { result };
+};
+
+exports.adminsearch = async function adminsearch(ctx) {
+  const loginkey = await verifyer.verifyadmin(ctx, ctx.header.token, 0);
+  const limit = ctx.request.body.limit || 10;
+  const offset = ctx.request.body.offset || 0;
+  const searchObj = {
+    order: [
+      ['id', 'desc'],
+    ],
+    limit,
+    offset,
+    where: {
+      adminidlist: {
+        [Op.contains]: [loginkey.adminid]
+      }
+    }
+  };
+  for (const index in ctx.request.body.searchObj) {
+    if (models.activitys.attributes[index].type instanceof DataTypes.STRING) {
+      searchObj.where[index] = {
+        [Op.like]: `%${ctx.request.body.searchObj[index]}%`,
+      };
+    } else {
+      searchObj.where[index] = ctx.request.body.searchObj[index];
+    }
+  }
+  const result = await models.activitys.findAndCountAll(searchObj);
+  ctx.body = { result };
+};
+
+exports.change = async function change(ctx) {
+  const loginkey = await verifyer.verifyadmin(ctx, ctx.header.token, 0);
+  ctx.assert(ctx.request.body.obj.id, 500, '修改对象不存在');
+  ctx.assert(ctx.request.body.obj.statu, 500, '修改对象不存在');
+  const have = await models.activitys.find({
+    where: { id: ctx.request.body.obj.id }
+  });
+  ctx.assert(have, 500, '修改对象不存在');
+  if(have.adminidlist.indexOf(loginkey.adminid) != -1){
+    await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
+  }
+  await models.activitys.update({
+    statu: ctx.request.body.obj.statu || have.statu,
+  }, {
+    where: {
+      id: ctx.request.body.obj.id,
+    },
+  });
+  ctx.body = { message: 'success' };
 };

@@ -15,7 +15,7 @@ exports.add = async function add(ctx) {
     await models.machines.update({
       name: ctx.request.body.obj.name || have.name,
       ip: ctx.request.body.obj.ip || have.ip,
-      actionlist: ctx.request.body.obj.actionlist || have.actionlist,
+      actionlist: JSON.parse(ctx.request.body.obj.actionlist) || have.actionlist,
       statu: ctx.request.body.obj.statu || have.statu,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
@@ -24,13 +24,15 @@ exports.add = async function add(ctx) {
       },
     });
   }else{
+    console.log(JSON.parse(ctx.request.body.obj.actionlist));
+    console.log(ctx.request.body.obj.actionlist);
     await models.machines.create({
       adminid: loginkey.adminid,
-      name: ctx.request.body.obj.name || have.name,
-      ip: ctx.request.body.obj.ip || have.ip,
-      actionlist: ctx.request.body.obj.actionlist || have.actionlist,
-      statu: ctx.request.body.obj.actionlist || have.actionlist,
-      tip: ctx.request.body.obj.tip || have.tip,
+      name: ctx.request.body.obj.name,
+      ip: ctx.request.body.obj.ip,
+      actionlist: JSON.parse(ctx.request.body.obj.actionlist),
+      statu: ctx.request.body.obj.statu,
+      tip: ctx.request.body.obj.tip,
     });
   }
   ctx.body = { message: 'success' };

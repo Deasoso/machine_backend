@@ -15,9 +15,9 @@ module.exports = sequelize.connect.define('activitys', { // 活动
     defaultValue: 0,
   },
   adminidlist: { // 活动执行人列表
-    type: DataTypes.INTEGER,
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: [],
   },
   name: { // 名称
     type: DataTypes.STRING,

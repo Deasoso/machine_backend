@@ -13,7 +13,7 @@ exports.add = async function add(ctx) {
     });
     ctx.assert(have, 500, '修改对象不存在');
     await models.actions.update({
-      adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
+      adminidlist: JSON.parse(ctx.request.body.obj.adminidlist) || have.adminidlist,
       name: ctx.request.body.obj.name || have.name,
       actionid: ctx.request.body.obj.actionid || have.actionid,
       imageurl: ctx.request.body.obj.imageurl || have.imageurl,
@@ -27,12 +27,12 @@ exports.add = async function add(ctx) {
   }else{
     await models.actions.create({
       adminid: loginkey.adminid,
-      adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
-      name: ctx.request.body.obj.name || have.name,
-      actionid: ctx.request.body.obj.actionid || have.actionid,
-      imageurl: ctx.request.body.obj.imageurl || have.imageurl,
-      iconurl: ctx.request.body.obj.iconurl || have.iconurl,
-      tip: ctx.request.body.obj.tip || have.tip,
+      adminidlist: JSON.parse(ctx.request.body.obj.adminidlist),
+      name: ctx.request.body.obj.name,
+      actionid: ctx.request.body.obj.actionid,
+      imageurl: ctx.request.body.obj.imageurl,
+      iconurl: ctx.request.body.obj.iconurl,
+      tip: ctx.request.body.obj.tip,
     });
   }
   ctx.body = { message: 'success' };

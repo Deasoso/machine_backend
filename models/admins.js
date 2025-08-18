@@ -9,11 +9,6 @@ module.exports = sequelize.connect.define('admins', { // 管理员
     autoIncrement: true,
     primaryKey: true,
   },
-  companyid: { // 公司id
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  },
   avatar: { // 头像
     type: DataTypes.STRING,
     allowNull: false,
