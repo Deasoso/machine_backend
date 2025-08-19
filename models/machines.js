@@ -19,6 +19,11 @@ module.exports = sequelize.connect.define('machines', { // 设备
     allowNull: false,
     defaultValue: '',
   },
+  type: { // 设备种类
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
   ip: { // 设备ip
     type: DataTypes.STRING,
     allowNull: false,

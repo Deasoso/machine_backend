@@ -14,6 +14,7 @@ exports.add = async function add(ctx) {
     ctx.assert(have, 500, '修改对象不存在');
     await models.machines.update({
       name: ctx.request.body.obj.name || have.name,
+      type: ctx.request.body.obj.type || have.type,
       ip: ctx.request.body.obj.ip || have.ip,
       actionlist: JSON.parse(ctx.request.body.obj.actionlist) || have.actionlist,
       statu: ctx.request.body.obj.statu || have.statu,
@@ -24,11 +25,10 @@ exports.add = async function add(ctx) {
       },
     });
   }else{
-    console.log(JSON.parse(ctx.request.body.obj.actionlist));
-    console.log(ctx.request.body.obj.actionlist);
     await models.machines.create({
       adminid: loginkey.adminid,
       name: ctx.request.body.obj.name,
+      type: ctx.request.body.obj.type,
       ip: ctx.request.body.obj.ip,
       actionlist: JSON.parse(ctx.request.body.obj.actionlist),
       statu: ctx.request.body.obj.statu,

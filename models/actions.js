@@ -20,9 +20,9 @@ module.exports = sequelize.connect.define('actions', { // 动作
     defaultValue: '',
   },
   actionid: { // 执行id
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 0,
+    defaultValue: '',
   },
   imageurl: { // 大图像
     type: DataTypes.STRING,

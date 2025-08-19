@@ -5,6 +5,8 @@ const Op = DataTypes.Op;
 const models = db.models;
 const verifyer = require('./verifyer');
 
+const { randomStr } = require('./admin');
+
 exports.add = async function add(ctx) {
   const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   if(ctx.request.body.obj.id){
@@ -15,7 +17,7 @@ exports.add = async function add(ctx) {
     await models.activitys.update({
       adminidlist: JSON.parse(ctx.request.body.obj.adminidlist) || have.adminidlist,
       name: ctx.request.body.obj.name || have.name,
-      machinelist: JSON.parse(ctx.request.body.obj.machinelist) || have.machinelist,
+      machineidlist: JSON.parse(ctx.request.body.obj.machineidlist) || have.machineidlist,
       statu: ctx.request.body.obj.statu || have.statu,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
@@ -28,7 +30,7 @@ exports.add = async function add(ctx) {
       adminid: loginkey.adminid,
       adminidlist: JSON.parse(ctx.request.body.obj.adminidlist),
       name: ctx.request.body.obj.name,
-      machinelist: JSON.parse(ctx.request.body.obj.machinelist),
+      machineidlist: JSON.parse(ctx.request.body.obj.machineidlist),
       statu: ctx.request.body.obj.statu,
       tip: ctx.request.body.obj.tip,
     });
@@ -92,21 +94,60 @@ exports.adminsearch = async function adminsearch(ctx) {
 
 exports.change = async function change(ctx) {
   const loginkey = await verifyer.verifyadmin(ctx, ctx.header.token, 0);
-  ctx.assert(ctx.request.body.obj.id, 500, '修改对象不存在');
-  ctx.assert(ctx.request.body.obj.statu, 500, '修改对象不存在');
+  ctx.assert(ctx.request.body.obj.id, 500, '请输入id');
+  ctx.assert(ctx.request.body.obj.statu, 500, '请输入状态');
   const have = await models.activitys.find({
     where: { id: ctx.request.body.obj.id }
   });
   ctx.assert(have, 500, '修改对象不存在');
-  if(have.adminidlist.indexOf(loginkey.adminid) != -1){
+  if(have.adminidlist.indexOf(loginkey.adminid) == -1){
     await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   }
-  await models.activitys.update({
-    statu: ctx.request.body.obj.statu || have.statu,
-  }, {
-    where: {
-      id: ctx.request.body.obj.id,
-    },
-  });
+  if(ctx.request.body.obj.statu == 1){
+    await models.activitys.update({
+      statu: ctx.request.body.obj.statu,
+      token: randomStr()
+    }, {
+      where: {
+        id: ctx.request.body.obj.id,
+      },
+    });
+  }else{
+    await models.activitys.update({
+      statu: ctx.request.body.obj.statu,
+    }, {
+      where: {
+        id: ctx.request.body.obj.id,
+      },
+    });
+  }
+  
   ctx.body = { message: 'success' };
+};
+
+exports.getactions = async function getactions(ctx) {
+  const have = await models.activitys.find({
+    where: { token: ctx.header.token }
+  });
+  ctx.assert(have, 500, '活动不存在');
+  const machines = await models.machines.findAll({
+    where: { 
+      id: {
+        [Op.or]: [have.machineidlist]
+      } 
+    }
+  });
+  var actions = [];
+  for(const index in machines){
+    const onemachine = machines[index];
+    const action = await models.actions.findAll({
+      where: { 
+        actionid: {
+          [Op.or]: [onemachine.actionlist]
+        } 
+      }
+    });
+    actions[onemachine.id] = action;
+  }
+  ctx.body = { actions, machines };
 };

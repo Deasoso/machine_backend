@@ -1,5 +1,5 @@
 {
-  "name": "finance_backend",
+  "name": "machine_backend",
   "scripts": {
     "eslint": "./node_modules/.bin/eslint ./",
     "dev": "NODE_ENV=development node ./webServer/index.js",

@@ -35,4 +35,14 @@
       "responses": { "200": { "description": "返回成功" } }
     }
   }
+  ,
+  "/getactions": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "activity",
+        "handler": "getactions"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  }
 }
