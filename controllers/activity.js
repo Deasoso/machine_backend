@@ -15,9 +15,9 @@ exports.add = async function add(ctx) {
     });
     ctx.assert(have, 500, '修改对象不存在');
     await models.activitys.update({
-      adminidlist: JSON.parse(ctx.request.body.obj.adminidlist) || have.adminidlist,
+      adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
       name: ctx.request.body.obj.name || have.name,
-      machineidlist: JSON.parse(ctx.request.body.obj.machineidlist) || have.machineidlist,
+      machineidlist: ctx.request.body.obj.machineidlist || have.machineidlist,
       statu: ctx.request.body.obj.statu || have.statu,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
@@ -28,9 +28,9 @@ exports.add = async function add(ctx) {
   }else{
     await models.activitys.create({
       adminid: loginkey.adminid,
-      adminidlist: JSON.parse(ctx.request.body.obj.adminidlist),
+      adminidlist: ctx.request.body.obj.adminidlist,
       name: ctx.request.body.obj.name,
-      machineidlist: JSON.parse(ctx.request.body.obj.machineidlist),
+      machineidlist: ctx.request.body.obj.machineidlist,
       statu: ctx.request.body.obj.statu,
       tip: ctx.request.body.obj.tip,
     });

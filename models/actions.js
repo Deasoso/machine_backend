@@ -14,6 +14,11 @@ module.exports = sequelize.connect.define('actions', { // 动作
     allowNull: false,
     defaultValue: 0,
   },
+  type: { // 设备种类
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
   name: { // 名称
     type: DataTypes.STRING,
     allowNull: false,

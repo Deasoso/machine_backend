@@ -17,7 +17,7 @@
       "responses": { "200": { "description": "返回成功" } }
     }
   },
-  "/searcadmin": {
+  "/searchadmin": {
     "post": {
       "x-oai-controller": [{
         "file": "admin",

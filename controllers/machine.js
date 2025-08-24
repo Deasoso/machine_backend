@@ -16,7 +16,7 @@ exports.add = async function add(ctx) {
       name: ctx.request.body.obj.name || have.name,
       type: ctx.request.body.obj.type || have.type,
       ip: ctx.request.body.obj.ip || have.ip,
-      actionlist: JSON.parse(ctx.request.body.obj.actionlist) || have.actionlist,
+      actionlist: ctx.request.body.obj.actionlist || have.actionlist,
       statu: ctx.request.body.obj.statu || have.statu,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
@@ -30,7 +30,7 @@ exports.add = async function add(ctx) {
       name: ctx.request.body.obj.name,
       type: ctx.request.body.obj.type,
       ip: ctx.request.body.obj.ip,
-      actionlist: JSON.parse(ctx.request.body.obj.actionlist),
+      actionlist: ctx.request.body.obj.actionlist,
       statu: ctx.request.body.obj.statu,
       tip: ctx.request.body.obj.tip,
     });
