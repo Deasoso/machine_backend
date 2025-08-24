@@ -37,7 +37,6 @@ exports.add = async function add(ctx) {
 };
 
 exports.search = async function search(ctx) {
-  await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   const limit = ctx.request.body.limit || 10;
   const offset = ctx.request.body.offset || 0;
   const searchObj = {

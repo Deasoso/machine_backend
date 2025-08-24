@@ -6,7 +6,7 @@ const models = db.models;
 const verifyer = require('./verifyer');
 
 exports.add = async function add(ctx) {
-  const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
+  await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   if(ctx.request.body.obj.id){
     const have = await models.globals.find({
       where: { id: ctx.request.body.obj.id }
@@ -32,7 +32,6 @@ exports.add = async function add(ctx) {
 };
 
 exports.search = async function search(ctx) {
-  await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   const limit = ctx.request.body.limit || 10;
   const offset = ctx.request.body.offset || 0;
   const searchObj = {
