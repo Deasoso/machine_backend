@@ -19,6 +19,7 @@ exports.add = async function add(ctx) {
       name: ctx.request.body.obj.name || have.name,
       machineidlist: ctx.request.body.obj.machineidlist || have.machineidlist,
       statu: ctx.request.body.obj.statu || have.statu,
+      imageurl: ctx.request.body.obj.imageurl || have.imageurl,
       tip: ctx.request.body.obj.tip || have.tip,
     }, {
       where: {
@@ -32,6 +33,7 @@ exports.add = async function add(ctx) {
       name: ctx.request.body.obj.name,
       machineidlist: ctx.request.body.obj.machineidlist,
       statu: ctx.request.body.obj.statu,
+      imageurl: ctx.request.body.obj.imageurl,
       tip: ctx.request.body.obj.tip,
     });
   }
@@ -126,18 +128,18 @@ exports.change = async function change(ctx) {
 };
 
 exports.getactions = async function getactions(ctx) {
-  const have = await models.activitys.find({
+  const activity = await models.activitys.find({
     where: { token: ctx.header.token }
   });
-  ctx.assert(have, 500, '活动不存在');
+  ctx.assert(activity, 500, '活动不存在');
   const machines = await models.machines.findAll({
     where: { 
       id: {
-        [Op.or]: [have.machineidlist]
+        [Op.or]: [activity.machineidlist]
       } 
     }
   });
-  var actions = [];
+  var actions = {};
   for(const index in machines){
     const onemachine = machines[index];
     const action = await models.actions.findAll({
@@ -149,5 +151,5 @@ exports.getactions = async function getactions(ctx) {
     });
     actions[onemachine.id] = action;
   }
-  ctx.body = { actions, machines };
+  ctx.body = { actions, machines, activity };
 };

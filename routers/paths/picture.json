@@ -1,0 +1,11 @@
+{
+  "/useruploadpicture": {
+    "post": {
+      "x-oai-controller": [{
+        "file": "picture",
+        "handler": "userUploadPicture"
+      }],
+      "responses": { "200": { "description": "返回成功" } }
+    }
+  }
+}

@@ -34,6 +34,11 @@ module.exports = sequelize.connect.define('activitys', { // 活动
     allowNull: false,
     defaultValue: 0,
   },
+  imageurl: { // 图片
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: '',
+  },
   token: { // token
     type: DataTypes.STRING,
     allowNull: false,
