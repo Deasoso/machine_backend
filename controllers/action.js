@@ -15,6 +15,7 @@ exports.add = async function add(ctx) {
     await models.actions.update({
       name: ctx.request.body.obj.name || have.name,
       actionid: ctx.request.body.obj.actionid || have.actionid,
+      type: ctx.request.body.obj.type || have.type,
       imageurl: ctx.request.body.obj.imageurl || have.imageurl,
       iconurl: ctx.request.body.obj.iconurl || have.iconurl,
       tip: ctx.request.body.obj.tip || have.tip,
@@ -28,6 +29,7 @@ exports.add = async function add(ctx) {
       adminid: loginkey.adminid,
       name: ctx.request.body.obj.name,
       actionid: ctx.request.body.obj.actionid,
+      type: ctx.request.body.obj.type,
       imageurl: ctx.request.body.obj.imageurl,
       iconurl: ctx.request.body.obj.iconurl,
       tip: ctx.request.body.obj.tip,

@@ -9,35 +9,56 @@ const { randomStr } = require('./admin');
 
 exports.add = async function add(ctx) {
   const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
+  var newactivity = {};
   if(ctx.request.body.obj.id){
     const have = await models.activitys.find({
       where: { id: ctx.request.body.obj.id }
     });
     ctx.assert(have, 500, '修改对象不存在');
-    await models.activitys.update({
+    newactivity = await models.activitys.update({
+      type: ctx.request.body.obj.type || have.type,
       adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
       name: ctx.request.body.obj.name || have.name,
       machineidlist: ctx.request.body.obj.machineidlist || have.machineidlist,
       statu: ctx.request.body.obj.statu || have.statu,
+      iconurl: ctx.request.body.obj.iconurl || have.iconurl,
       imageurl: ctx.request.body.obj.imageurl || have.imageurl,
+      imageurl2: ctx.request.body.obj.imageurl2 || have.imageurl2,
+      yposition: ctx.request.body.obj.yposition || have.yposition,
+      actionperrow: ctx.request.body.obj.actionperrow || have.actionperrow,
+      fontsize: ctx.request.body.obj.fontsize || have.fontsize,
+      fontweight: ctx.request.body.obj.fontweight || have.fontweight,
+      fontcolor: ctx.request.body.obj.fontcolor || have.fontcolor,
+      fontname: ctx.request.body.obj.fontname || have.fontname,
       tip: ctx.request.body.obj.tip || have.tip,
+      token2: randomStr()
     }, {
       where: {
         id: ctx.request.body.obj.id,
       },
     });
   }else{
-    await models.activitys.create({
+    newactivity = await models.activitys.create({
       adminid: loginkey.adminid,
+      type: ctx.request.body.obj.type,
       adminidlist: ctx.request.body.obj.adminidlist,
       name: ctx.request.body.obj.name,
       machineidlist: ctx.request.body.obj.machineidlist,
       statu: ctx.request.body.obj.statu,
+      iconurl: ctx.request.body.obj.iconurl,
       imageurl: ctx.request.body.obj.imageurl,
+      imageurl2: ctx.request.body.obj.imageurl2,
+      yposition: ctx.request.body.obj.yposition,
+      actionperrow: ctx.request.body.obj.actionperrow,
+      fontsize: ctx.request.body.obj.fontsize,
+      fontweight: ctx.request.body.obj.fontweight,
+      fontcolor: ctx.request.body.obj.fontcolor,
+      fontname: ctx.request.body.obj.fontname,
       tip: ctx.request.body.obj.tip,
+      token2: randomStr()
     });
   }
-  ctx.body = { message: 'success' };
+  ctx.body = { newactivity };
 };
 
 exports.search = async function search(ctx) {
@@ -128,9 +149,17 @@ exports.change = async function change(ctx) {
 };
 
 exports.getactions = async function getactions(ctx) {
-  const activity = await models.activitys.find({
-    where: { token: ctx.header.token }
-  });
+  var activity = {}
+  if(ctx.header.token){
+    activity = await models.activitys.find({
+      where: { token: ctx.header.token }
+    });
+  }else{
+    activity = await models.activitys.find({
+      where: { token2: ctx.header.token2 }
+    });
+  }
+  
   ctx.assert(activity, 500, '活动不存在');
   const machines = await models.machines.findAll({
     where: { 
