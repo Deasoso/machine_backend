@@ -6,12 +6,13 @@ const models = db.models;
 const verifyer = require('./verifyer');
 
 exports.add = async function add(ctx) {
-  const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
+  const loginkey = await verifyer.verifyadmin(ctx, ctx.header.token, 0);
   if(ctx.request.body.obj.id){
     const have = await models.actions.find({
       where: { id: ctx.request.body.obj.id }
     });
     ctx.assert(have, 500, '修改对象不存在');
+    ctx.assert(have.adminid == loginkey.adminid, 500, '权限不足');
     await models.actions.update({
       name: ctx.request.body.obj.name || have.name,
       actionid: ctx.request.body.obj.actionid || have.actionid,
@@ -39,6 +40,12 @@ exports.add = async function add(ctx) {
 };
 
 exports.search = async function search(ctx) {
+  const loginkey = await models.adminloginkeys.find({
+    where: {
+      type: 0,
+      accesskey: ctx.header.token
+    },
+  });
   const limit = ctx.request.body.limit || 10;
   const offset = ctx.request.body.offset || 0;
   const searchObj = {
@@ -49,6 +56,9 @@ exports.search = async function search(ctx) {
     offset,
     where: {}
   };
+  if(loginkey){
+    searchObj.where.adminid = loginkey.adminid;
+  }
   for (const index in ctx.request.body.searchObj) {
     if (models.actions.attributes[index].type instanceof DataTypes.STRING) {
       searchObj.where[index] = {

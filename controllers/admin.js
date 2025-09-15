@@ -10,8 +10,8 @@ const crypto = require('crypto');
 
 const pw_secret = 'this_is_&&xiaoyuan##PW';
 
-const superadmin_username = 'admin';
-const superadmin_pw = '2f5554a2b18d2bc543d16b75624b177915a23d2e' // thisisPW#2025#XW
+const superadmin_username = '18008454858';
+const superadmin_pw = '30aaa3e19606aa76992be40bad4b4db6046a5981' // yijing888
 
 exports.loginadmin = async function loginadmin(ctx) {
   ctx.assert(ctx.request.body.username, 500, '请输入用户名');
@@ -71,6 +71,7 @@ exports.loginadmin = async function loginadmin(ctx) {
 };
 
 exports.changeadmin = async function changeadmin(ctx) {
+  await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   ctx.assert(ctx.request.body.obj, 500, '请输入修改内容');
   if(ctx.request.body.obj.id){
     const have = await models.admins.find({
@@ -126,7 +127,7 @@ exports.changeadmin = async function changeadmin(ctx) {
 };
 
 exports.search = async function search(ctx) {
-  await verifyer.verifyadmin(ctx, ctx.header.token, 0);
+  await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   const limit = ctx.request.body.limit || 10;
   const offset = ctx.request.body.offset || 0;
   const searchObj = {

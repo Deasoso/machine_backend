@@ -8,7 +8,7 @@ const secretKey = 'KGcPTWECMajGAmQK0gZaaWKkrmuMEo-NqndkVRng';
 
 exports.userUploadPicture = async function userUploadPicture(ctx) {
   // 由于各个仓库共用七牛云密钥，所以图片统一由个人服务器上传
-  const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
+  const loginkey = await verifyer.verifyadmin(ctx, ctx.header.token, 0);
 
   const file = ctx.request.files.file;
   ctx.assert(file, 500, '未检测到文件');

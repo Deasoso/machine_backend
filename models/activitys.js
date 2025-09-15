@@ -94,6 +94,11 @@ module.exports = sequelize.connect.define('activitys', { // 活动
     allowNull: false,
     defaultValue: '',
   },
+  forwardip: { // 法奥转发ip
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: '',
+  },
   tip: { // 备注
     type: DataTypes.STRING,
     allowNull: false,

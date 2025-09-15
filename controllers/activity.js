@@ -8,13 +8,14 @@ const verifyer = require('./verifyer');
 const { randomStr } = require('./admin');
 
 exports.add = async function add(ctx) {
-  const loginkey = await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
+  const loginkey = await verifyer.verifyadmin(ctx, ctx.header.token, 0);
   var newactivity = {};
   if(ctx.request.body.obj.id){
     const have = await models.activitys.find({
       where: { id: ctx.request.body.obj.id }
     });
     ctx.assert(have, 500, '修改对象不存在');
+    ctx.assert(have.adminid == loginkey.adminid, 500, '权限不足');
     newactivity = await models.activitys.update({
       type: ctx.request.body.obj.type || have.type,
       adminidlist: ctx.request.body.obj.adminidlist || have.adminidlist,
@@ -30,6 +31,7 @@ exports.add = async function add(ctx) {
       fontweight: ctx.request.body.obj.fontweight || have.fontweight,
       fontcolor: ctx.request.body.obj.fontcolor || have.fontcolor,
       fontname: ctx.request.body.obj.fontname || have.fontname,
+      forwardip: ctx.request.body.obj.forwardip || have.forwardip,
       tip: ctx.request.body.obj.tip || have.tip,
       token2: randomStr()
     }, {
@@ -54,6 +56,7 @@ exports.add = async function add(ctx) {
       fontweight: ctx.request.body.obj.fontweight,
       fontcolor: ctx.request.body.obj.fontcolor,
       fontname: ctx.request.body.obj.fontname,
+      forwardip: ctx.request.body.obj.forwardip,
       tip: ctx.request.body.obj.tip,
       token2: randomStr()
     });
@@ -62,31 +65,6 @@ exports.add = async function add(ctx) {
 };
 
 exports.search = async function search(ctx) {
-  await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
-  const limit = ctx.request.body.limit || 10;
-  const offset = ctx.request.body.offset || 0;
-  const searchObj = {
-    order: [
-      ['id', 'desc'],
-    ],
-    limit,
-    offset,
-    where: {}
-  };
-  for (const index in ctx.request.body.searchObj) {
-    if (models.activitys.attributes[index].type instanceof DataTypes.STRING) {
-      searchObj.where[index] = {
-        [Op.like]: `%${ctx.request.body.searchObj[index]}%`,
-      };
-    } else {
-      searchObj.where[index] = ctx.request.body.searchObj[index];
-    }
-  }
-  const result = await models.activitys.findAndCountAll(searchObj);
-  ctx.body = { result };
-};
-
-exports.adminsearch = async function adminsearch(ctx) {
   const loginkey = await verifyer.verifyadmin(ctx, ctx.header.token, 0);
   const limit = ctx.request.body.limit || 10;
   const offset = ctx.request.body.offset || 0;
@@ -97,9 +75,7 @@ exports.adminsearch = async function adminsearch(ctx) {
     limit,
     offset,
     where: {
-      adminidlist: {
-        [Op.contains]: [loginkey.adminid]
-      }
+      adminid: loginkey.adminid
     }
   };
   for (const index in ctx.request.body.searchObj) {
@@ -123,6 +99,7 @@ exports.change = async function change(ctx) {
     where: { id: ctx.request.body.obj.id }
   });
   ctx.assert(have, 500, '修改对象不存在');
+  ctx.assert(have.adminid == loginkey.adminid, 500, '权限不足');
   if(have.adminidlist.indexOf(loginkey.adminid) == -1){
     await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
   }
