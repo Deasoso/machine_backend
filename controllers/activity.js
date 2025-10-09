@@ -150,7 +150,7 @@ exports.getactions = async function getactions(ctx) {
     const onemachine = machines[index];
     const action = await models.actions.findAll({
       where: { 
-        actionid: {
+        id: {
           [Op.or]: [onemachine.actionlist]
         } 
       }
