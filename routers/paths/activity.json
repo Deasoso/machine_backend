@@ -17,15 +17,6 @@
       "responses": { "200": { "description": "返回成功" } }
     }
   },
-  "/adminsearchactivity": {
-    "post": {
-      "x-oai-controller": [{
-        "file": "activity",
-        "handler": "adminsearch"
-      }],
-      "responses": { "200": { "description": "返回成功" } }
-    }
-  },
   "/changeactivity": {
     "post": {
       "x-oai-controller": [{

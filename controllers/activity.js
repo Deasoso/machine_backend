@@ -100,9 +100,9 @@ exports.change = async function change(ctx) {
   });
   ctx.assert(have, 500, '修改对象不存在');
   ctx.assert(have.adminid == loginkey.adminid, 500, '权限不足');
-  if(have.adminidlist.indexOf(loginkey.adminid) == -1){
-    await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
-  }
+  // if(have.adminidlist.indexOf(loginkey.adminid) == -1){
+  //   await verifyer.verifysuperadmin(ctx, ctx.header.token, 0);
+  // }
   if(ctx.request.body.obj.statu == 1){
     await models.activitys.update({
       statu: ctx.request.body.obj.statu,

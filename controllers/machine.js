@@ -50,7 +50,7 @@ exports.search = async function search(ctx) {
     limit,
     offset,
     where: {
-      adminid: loginkey
+      adminid: loginkey.adminid
     }
   };
   for (const index in ctx.request.body.searchObj) {
